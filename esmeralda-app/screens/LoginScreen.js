@@ -8,7 +8,7 @@ export default function LoginScreen({ navigation }) {
       <Image source={require('../assets/icon.png')} style={styles.logo} />
       <TextInput style={styles.input} placeholder="Email" />
       <TextInput style={styles.input} placeholder="Senha" secureTextEntry />
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
 
