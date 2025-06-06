@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native';
 
 export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.container}>
+      <View style={styles.topo}></View>
       <Text style={styles.title}>Esmeralda</Text>
-      <Image source={require('../assets/icon.png')} style={styles.logo} />
+      <Image source={require('../assets/logo.png')} style={styles.logo} />
       <TextInput style={styles.input} placeholder="Email" />
       <TextInput style={styles.input} placeholder="Senha" secureTextEntry />
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
@@ -25,45 +26,55 @@ const styles = StyleSheet.create({
     backgroundColor: '#d7ded7',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20
+    gap:15,
   },
   title: {
     backgroundColor: '#b7e3c3',
     width: '100%',
     textAlign: 'center',
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
     paddingVertical: 10,
-    marginBottom: 30
+    marginBottom: 30,
+    position: 'absolute',
+    top:0,
+    paddingTop: 40,
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 140,
+    height: 140,
     marginBottom: 30,
     resizeMode: 'contain'
   },
   input: {
     width: '100%',
-    height: 40,
+    height: 50,
     backgroundColor: '#fff',
-    borderRadius: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black', 
+    width: '80%', 
     paddingHorizontal: 10,
     marginBottom: 15,
-    elevation: 2
+    elevation: 2,
+    fontSize: 20,
   },
   button: {
     backgroundColor: '#7aa587',
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 5,
-    marginBottom: 15
+    marginBottom: 15,
+    
   },
   buttonText: {
     color: '#fff',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize:20,
   },
   link: {
     color: '#333',
-    textDecorationLine: 'underline'
-  }
+    textDecorationLine: 'underline',
+    fontSize:20,
+  },
+  
 });
