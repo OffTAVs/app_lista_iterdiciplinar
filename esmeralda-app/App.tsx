@@ -28,6 +28,7 @@ function DrawerRoutes() {
       }}
     >
       <Drawer.Screen name="Home" component={HomeScreen} />
+      <Drawer.Screen name="Lista" component={ListaScreen} />
       {/* Outras telas */}
     </Drawer.Navigator>
   );

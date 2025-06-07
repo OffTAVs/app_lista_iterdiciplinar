@@ -35,10 +35,11 @@ export default function ShoppingListScreen() {
     <View style={styles.container}>
       {/* Topo */}
       <View style={styles.header}>
-        <Ionicons name="menu" size={24} />
-        <Text style={styles.headerTitle}>Nome da Lista</Text>
-        <Ionicons name="ellipsis-vertical" size={24} />
-      </View>
+                <TouchableOpacity onPress={() => navigation.openDrawer()}>
+                  <Ionicons name="menu" size={28} color="black" style={{ marginRight: 8 }} />
+                </TouchableOpacity>
+                <Text style={styles.headerText}>Nome do Aplicativo</Text>
+              </View>
  
       {/* Título */}
       <Text style={styles.listTitle}>Lista de Compra</Text>
