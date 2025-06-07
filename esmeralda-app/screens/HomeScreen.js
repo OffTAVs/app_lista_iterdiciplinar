@@ -17,7 +17,7 @@ export default function HomeScreen({ navigation }) {
 
         {/* Botões centrais */}
         <View style={styles.centerContent}>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('Lista')}>
             <MaterialIcons name="note-add" size={48} color="black" />
             <Text style={styles.buttonText}>Crie uma lista</Text>
           </TouchableOpacity>
