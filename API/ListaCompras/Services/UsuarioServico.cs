@@ -28,6 +28,7 @@ namespace ListaCompras.Services
 
             var usuario = new UsuarioModel
             {
+                Id = Guid.NewGuid(),
                 Nome = dto.Nome,
                 Email = dto.Email,
                 Senha = BCrypt.Net.BCrypt.HashPassword(dto.Senha)
@@ -50,7 +51,7 @@ namespace ListaCompras.Services
             {
                 Subject = new ClaimsIdentity(new Claim[] {
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
-                new Claim(ClaimTypes.Email, usuario.Email)
+                new Claim(ClaimTypes.Name, usuario.Nome)
             }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(chave), SecurityAlgorithms.HmacSha256Signature)

@@ -1,18 +1,26 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Dapper;
-using Microsoft.Data.SqlClient;
 using ListaCompras.Interfaces;
 using ListaCompras.Repositories;
 using ListaCompras.Services;
-using System.Data;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+using ListaCompras.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração do Dapper (SQL Server)
-builder.Services.AddTransient<IDbConnection>((sp) =>
-    new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.Configure<MongoDBSettings>(
+    builder.Configuration.GetSection("MongoDB"));
+
+builder.Services.AddSingleton(sp =>
+    new MongoClient(sp.GetRequiredService<IOptions<MongoDBSettings>>()
+      .Value.ConnectionString));
+
+builder.Services.AddScoped<IMongoDatabase>(sp =>
+    sp.GetRequiredService<MongoClient>()
+      .GetDatabase(sp.GetRequiredService<IOptions<MongoDBSettings>>()
+        .Value.DatabaseName));
 
 
 // Configuração de autenticação JWT

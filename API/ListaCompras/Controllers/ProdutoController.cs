@@ -17,14 +17,14 @@ namespace ListaCompras.Controllers
         }
 
         [HttpGet("lista/{listaId}")]
-        public async Task<IActionResult> ObterPorListaId(int listaId)
+        public async Task<IActionResult> ObterPorListaId(Guid listaId)
         {
             var produtos = await _produtoRepositorio.ListarPorListaIdAsync(listaId);
             return Ok(produtos);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> ObterPorId(int id)
+        public async Task<IActionResult> ObterPorId(Guid id)
         {
             var produto = await _produtoRepositorio.BuscarPorIdAsync(id);
             if (produto == null) 
@@ -49,7 +49,7 @@ namespace ListaCompras.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Atualizar(int id, [FromBody] ProdutoAlterarDTO dto)
+        public async Task<IActionResult> Atualizar(Guid id, [FromBody] ProdutoAlterarDTO dto)
         {
             var produto = new ProdutoModel
             {
@@ -83,7 +83,7 @@ namespace ListaCompras.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Remover(int id)
+        public async Task<IActionResult> Remover(Guid id)
         {
             await _produtoRepositorio.DeletarAsync(id);
             return Ok("Produto removido com sucesso.");

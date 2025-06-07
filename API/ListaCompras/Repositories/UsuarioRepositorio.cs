@@ -1,36 +1,31 @@
-﻿using Dapper;
-using ListaCompras.Interfaces;
+﻿using ListaCompras.Interfaces;
 using ListaCompras.Models;
-using System.Data;
+using MongoDB.Driver;
 
 namespace ListaCompras.Repositories
 {
     public class UsuarioRepositorio : IUsuarioRepositorio
     {
-        private readonly IDbConnection _conexao;
+        private readonly IMongoCollection<UsuarioModel> _usuarios;
 
-        public UsuarioRepositorio(IDbConnection conexao)
+        public UsuarioRepositorio(IMongoDatabase db)
         {
-            _conexao = conexao;
+            _usuarios = db.GetCollection<UsuarioModel>("Usuarios");
         }
 
         public async Task<UsuarioModel> BuscarPorEmailAsync(string email)
         {
-            return await _conexao.QueryFirstOrDefaultAsync<UsuarioModel>(
-                "SELECT * FROM Usuario WHERE Email = @Email", new { Email = email });
+            return await _usuarios.Find(u => u.Email == email).FirstOrDefaultAsync();
         }
 
-        public async Task<UsuarioModel> BuscarPorIdAsync(int id)
+        public async Task<UsuarioModel> BuscarPorIdAsync(Guid id)
         {
-            return await _conexao.QueryFirstOrDefaultAsync<UsuarioModel>(
-                "SELECT * FROM Usuario WHERE Id = @Id", new { Id = id });
+            return await _usuarios.Find(u => u.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task CriarAsync(UsuarioModel usuario)
         {
-            await _conexao.ExecuteAsync(
-                "INSERT INTO Usuario (Nome, Email, Senha) VALUES (@Nome, @Email, @Senha)", usuario);
+            await _usuarios.InsertOneAsync(usuario);
         }
     }
-
 }
