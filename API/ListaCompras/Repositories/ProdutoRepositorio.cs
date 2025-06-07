@@ -1,48 +1,42 @@
-﻿using Dapper;
-using ListaCompras.Interfaces;
+﻿using ListaCompras.Interfaces;
 using ListaCompras.Models;
-using System.Data;
+using MongoDB.Driver;
 
 namespace ListaCompras.Repositories
 {
     public class ProdutoRepositorio : IProdutoRepositorio
     {
-        private readonly IDbConnection _conexao;
+        private readonly IMongoCollection<ProdutoModel> _produtos;
 
-        public ProdutoRepositorio(IDbConnection conexao)
+        public ProdutoRepositorio(IMongoDatabase database)
         {
-            _conexao = conexao;
+            _produtos = database.GetCollection<ProdutoModel>("Produtos");
         }
 
-        public async Task<ProdutoModel> BuscarPorIdAsync(int id)
+        public async Task<ProdutoModel> BuscarPorIdAsync(Guid id)
         {
-            return await _conexao.QueryFirstOrDefaultAsync<ProdutoModel>(
-                "SELECT * FROM Produto WHERE Id = @Id", new { Id = id });
+            return await _produtos.Find(p => p.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<List<ProdutoModel>> ListarPorListaIdAsync(int listaId)
+        public async Task<List<ProdutoModel>> ListarPorListaIdAsync(Guid listaId)
         {
-            var produtos = await _conexao.QueryAsync<ProdutoModel>(
-                "SELECT * FROM Produto WHERE ListaId = @ListaId", new { ListaId = listaId });
-            return produtos.ToList();
+            var resultado = await _produtos.Find(p => p.ListaId == listaId).ToListAsync();
+            return resultado;
         }
 
         public async Task CriarAsync(ProdutoModel produto)
         {
-            await _conexao.ExecuteAsync(
-                "INSERT INTO Produto (Nome, Descricao, Quantidade, Preco, ListaId) VALUES (@Nome, @Descricao, @Quantidade, @Preco, @ListaId)", produto);
+            await _produtos.InsertOneAsync(produto);
         }
 
         public async Task AtualizarAsync(ProdutoModel produto)
         {
-            await _conexao.ExecuteAsync(
-                "UPDATE Produto SET Nome = @Nome, Descricao = @Descricao, Quantidade = @Quantidade, Preco = @Preco WHERE Id = @Id", produto);
+            await _produtos.ReplaceOneAsync(p => p.Id == produto.Id, produto);
         }
 
-        public async Task DeletarAsync(int id)
+        public async Task DeletarAsync(Guid id)
         {
-            await _conexao.ExecuteAsync("DELETE FROM Produto WHERE Id = @Id", new { Id = id });
+            await _produtos.DeleteOneAsync(p => p.Id == id);
         }
     }
-
 }

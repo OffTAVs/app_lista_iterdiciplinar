@@ -4,11 +4,11 @@ namespace ListaCompras.Interfaces
 {
     public interface IProdutoRepositorio
     {
-        Task<ProdutoModel> BuscarPorIdAsync(int id);
-        Task<List<ProdutoModel>> ListarPorListaIdAsync(int listaId);
+        Task<ProdutoModel> BuscarPorIdAsync(Guid id);
+        Task<List<ProdutoModel>> ListarPorListaIdAsync(Guid listaId);
         Task CriarAsync(ProdutoModel produto);
         Task AtualizarAsync(ProdutoModel produto);
-        Task DeletarAsync(int id);
+        Task DeletarAsync(Guid id);
     }
 
 }

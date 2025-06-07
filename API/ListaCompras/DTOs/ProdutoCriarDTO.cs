@@ -6,6 +6,6 @@
         public string Descricao { get; set; } = string.Empty;
         public int Quantidade { get; set; }
         public double Preco { get; set; }
-        public int ListaId { get; set; }
+        public Guid ListaId { get; set; }
     }
 }

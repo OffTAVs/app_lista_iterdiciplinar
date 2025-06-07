@@ -1,48 +1,39 @@
-﻿using Dapper;
-using ListaCompras.Interfaces;
+﻿using ListaCompras.Interfaces;
 using ListaCompras.Models;
-using System.Data;
+using MongoDB.Driver;
 
 namespace ListaCompras.Repositories
 {
     public class ListaRepositorio : IListaRepositorio
     {
-        private readonly IDbConnection _conexao;
+        private readonly IMongoCollection<ListaModel> _listas;
+        private readonly IMongoCollection<ProdutoModel> _produtos;
 
-        public ListaRepositorio(IDbConnection conexao)
+        public ListaRepositorio(IMongoDatabase db)
         {
-            _conexao = conexao;
+            _listas = db.GetCollection<ListaModel>("Listas");
+            _produtos = db.GetCollection<ProdutoModel>("Produtos");
         }
 
-        public async Task<ListaModel> BuscarPorIdAsync(int id)
-        {
-            return await _conexao.QueryFirstOrDefaultAsync<ListaModel>(
-                "SELECT * FROM Lista WHERE Id = @Id", new { Id = id });
-        }
+        public async Task<List<ListaModel>> BuscarPorUsuarioIdAsync(Guid usuarioId) =>
+            await _listas.Find(l => l.UsuarioId == usuarioId).ToListAsync();
 
-        public async Task<List<ListaModel>> ListarPorUsuarioIdAsync(int usuarioId)
-        {
-            var listas = await _conexao.QueryAsync<ListaModel>(
-                "SELECT * FROM Lista WHERE UsuarioId = @UsuarioId", new { UsuarioId = usuarioId });
-            return listas.ToList();
-        }
+        public async Task<ListaModel?> BuscarPorIdAsync(Guid id) =>
+            await _listas.Find(l => l.Id == id).FirstOrDefaultAsync();
 
-        public async Task CriarAsync(ListaModel lista)
-        {
-            await _conexao.ExecuteAsync(
-                "INSERT INTO Lista (Nome, Icone, UsuarioId) VALUES (@Nome, @Icone, @UsuarioId)", lista);
-        }
+        public async Task CriarAsync(ListaModel lista) =>
+            await _listas.InsertOneAsync(lista);
 
-        public async Task AtualizarAsync(ListaModel lista)
-        {
-            await _conexao.ExecuteAsync(
-                "UPDATE Lista SET Nome = @Nome, Icone = @Icone WHERE Id = @Id", lista);
-        }
+        public async Task AtualizarAsync(ListaModel lista) =>
+            await _listas.ReplaceOneAsync(l => l.Id == lista.Id, lista);
 
-        public async Task DeletarAsync(int id)
+        public async Task RemoverAsync(Guid id)
         {
-            await _conexao.ExecuteAsync("DELETE FROM Produto WHERE ListaId = @Id", new { Id = id });
-            await _conexao.ExecuteAsync("DELETE FROM Lista WHERE Id = @Id", new { Id = id });
+            // Remove todos os produtos dessa lista
+            await _produtos.DeleteManyAsync(p => p.ListaId == id);
+
+            // Depois remove a própria lista
+            await _listas.DeleteOneAsync(l => l.Id == id);
         }
     }
 
