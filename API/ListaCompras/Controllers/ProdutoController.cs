@@ -1,6 +1,7 @@
 ﻿using ListaCompras.DTOs;
 using ListaCompras.Interfaces;
 using ListaCompras.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ListaCompras.Controllers
@@ -17,6 +18,7 @@ namespace ListaCompras.Controllers
         }
 
         [HttpGet("lista/{listaId}")]
+        [Authorize]
         public async Task<IActionResult> ObterPorListaId(Guid listaId)
         {
             var produtos = await _produtoRepositorio.ListarPorListaIdAsync(listaId);
@@ -24,6 +26,7 @@ namespace ListaCompras.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> ObterPorId(Guid id)
         {
             var produto = await _produtoRepositorio.BuscarPorIdAsync(id);
@@ -33,6 +36,7 @@ namespace ListaCompras.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Criar([FromBody] ProdutoCriarDTO dto)
         {
             var produto = new ProdutoModel
@@ -49,6 +53,7 @@ namespace ListaCompras.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Atualizar(Guid id, [FromBody] ProdutoAlterarDTO dto)
         {
             var produto = new ProdutoModel
@@ -83,6 +88,7 @@ namespace ListaCompras.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Remover(Guid id)
         {
             await _produtoRepositorio.DeletarAsync(id);
