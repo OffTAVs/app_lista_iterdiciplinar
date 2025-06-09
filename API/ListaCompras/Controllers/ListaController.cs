@@ -1,6 +1,7 @@
 ﻿using ListaCompras.DTOs;
 using ListaCompras.Interfaces;
 using ListaCompras.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -17,14 +18,22 @@ namespace ListaCompras.Controllers
             _listaServico = listaServico;
         }
 
-        [HttpGet("usuario/{usuarioId}")]
-        public async Task<IActionResult> ObterPorUsuarioId(Guid usuarioId)
+        [HttpGet("usuario")]
+        [Authorize]
+        public async Task<IActionResult> ObterPorUsuarioId()
         {
-            var listas = await _listaServico.BuscarPorUsuarioIdAsync(usuarioId);
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var idUsuario))
+            {
+                return Unauthorized("Usuário inválido.");
+            }
+
+            var listas = await _listaServico.BuscarPorUsuarioIdAsync(idUsuario);
             return Ok(listas);
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> ObterPorId(Guid id)
         {
             var lista = await _listaServico.BuscarPorIdAsync(id);
@@ -33,6 +42,7 @@ namespace ListaCompras.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Criar([FromBody] ListaCriarDTO dto)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -54,6 +64,7 @@ namespace ListaCompras.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Atualizar(Guid id, [FromBody] ListaAlterarDTO dto)
         {
             var listaBuscada = await _listaServico.BuscarPorIdAsync(id);
@@ -71,6 +82,7 @@ namespace ListaCompras.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Remover(Guid id)
         {
             await _listaServico.RemoverAsync(id);
