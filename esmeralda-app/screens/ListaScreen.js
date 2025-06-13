@@ -8,6 +8,12 @@ export default function ShoppingListScreen() {
     { id: '1', name: 'Banana', price: 'R$4,50', quantity: 5, checked: true },
     { id: '2', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
     { id: '3', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
+    { id: '1', name: 'Banana', price: 'R$4,50', quantity: 5, checked: true },
+    { id: '2', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
+    { id: '3', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
+    { id: '1', name: 'Banana', price: 'R$4,50', quantity: 5, checked: true },
+    { id: '2', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
+    { id: '3', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
   ]);
  
   const toggleCheck = (id) => {
@@ -36,9 +42,9 @@ export default function ShoppingListScreen() {
       {/* Topo */}
       <View style={styles.header}>
                 <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                  <Ionicons name="menu" size={28} color="black" style={{ marginRight: 8 }} />
+                  <Ionicons name="menu" size={28} color="black" style={{ marginRight: 90 }} />
                 </TouchableOpacity>
-                <Text style={styles.headerText}>Nome do Aplicativo</Text>
+                <Text style={styles.headerTitle}>Esmeralda</Text>
               </View>
  
       {/* Título */}
@@ -71,13 +77,14 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: 40,
   },
   headerTitle: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 30,
     textDecorationLine: 'underline',
+    
   },
   listTitle: {
     marginTop: 20,
@@ -108,7 +115,7 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 18,
   },
   itemDetails: {
     fontSize: 13,
@@ -117,10 +124,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 20,
     paddingVertical: 20,
     gap: 5,
   },
   addItemText: {
-    fontSize: 14,
+    fontSize: 18,
+    paddingButton:30,
   },
 });
