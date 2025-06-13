@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Pressable } from 'r
 import { Ionicons } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
  
-export default function ShoppingListScreen() {
+export default function ShoppingListScreen( {navigation}) {
   const [items, setItems] = useState([
     { id: '1', name: 'Banana', price: 'R$4,50', quantity: 5, checked: true },
     { id: '2', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
