@@ -5,7 +5,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import LoginScreen from './screens/LoginScreen';
 import CadastroScreen from './screens/CadastroScreen';
 import HomeScreen from './screens/HomeScreen';
-import ListaScreen from './screens/ListaScreen'
+import ListaScreen from './screens/ListaScreen';
+import CadastroItemScreen from './screens/CadastroItemScreen';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -42,6 +43,8 @@ export default function App() {
         <Stack.Screen name="Cadastro" component={CadastroScreen} />
         <Stack.Screen name="Home" component={DrawerRoutes} />
         <Stack.Screen name="Lista" component={ListaScreen} />
+        <Stack.Screen name="CadastroItem" component={CadastroItemScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

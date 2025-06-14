@@ -60,7 +60,7 @@ export default function ShoppingListScreen( {navigation}) {
       />
  
       {/* Add Item */}
-      <TouchableOpacity style={styles.addItemButton}>
+      <TouchableOpacity style={styles.addItemButton} onPress={() => navigation.navigate('CadastroItem')}>
         <Text style={styles.addItemText}>Add new Item</Text>
         <Ionicons name="add" size={20} />
       </TouchableOpacity>
