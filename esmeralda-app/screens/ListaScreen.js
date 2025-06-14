@@ -82,9 +82,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontWeight: 'bold',
-    fontSize: 30,
-    textDecorationLine: 'underline',
-    
+    fontSize: 30,    
   },
   listTitle: {
     marginTop: 20,
