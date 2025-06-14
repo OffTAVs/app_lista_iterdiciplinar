@@ -1,19 +1,42 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { cadastrar } from "../axios/axios"
 
 export default function CadastroScreen({ navigation }) {
+  const [email, setEmail] = React.useState("");
+  const [senha, setSenha] = React.useState("");
+  const [confirmarSenha, setConfirmarSenha] = React.useState("");
+  const [nome, setNome] = React.useState("");
+
+  const [loading, setLoading] = React.useState(false);
+
+  const onSubmit = () => {
+    if (senha !== confirmarSenha) {
+      alert("As senhas não coincidem")
+    } else {
+      if (!loading) {
+        setLoading(true);
+        cadastrar({
+          email, senha, nome
+        })
+        .then(() => navigation.navigate('Cadastro'))
+        .catch(erro => alert(erro.response.data))
+        .finally(() => setLoading(false))
+      }
+    }
+  }
   
   return (
     
     <View style={styles.container}>
       <Text style={styles.title}>Nome do Aplicativo</Text>
       <Image source={require('../assets/logo.png')} style={styles.logo} />
-      <TextInput style={styles.input} placeholder="Email" />
-      <TextInput style={styles.input} placeholder="Senha" secureTextEntry />
-      <TextInput style={styles.input} placeholder="Confirmar senha" secureTextEntry />
-      <TextInput style={styles.input} placeholder="Nome" />
+      <TextInput value={email} onChangeText={setEmail} style={styles.input} placeholder="Email" />
+      <TextInput value={senha} onChangeText={setSenha} style={styles.input} placeholder="Senha" secureTextEntry />
+      <TextInput value={confirmarSenha} onChangeText={setConfirmarSenha} style={styles.input} placeholder="Confirmar senha" secureTextEntry />
+      <TextInput value={nome} onChangeText={setNome} style={styles.input} placeholder="Nome" />
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Cadastrar</Text>
+        <Text style={styles.buttonText} onPress={onSubmit}>Cadastrar</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Text style={styles.link}>Já tenho cadastro!</Text>

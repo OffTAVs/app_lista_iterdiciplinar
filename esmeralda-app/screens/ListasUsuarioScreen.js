@@ -1,33 +1,27 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
-import { obterProdutos } from "../axios/axios";
+import { obterListas } from "../axios/axios"
 
-export default function ShoppingListScreen({ navigation, route }) {
-  const { itemId } = route.params;
+export default function ListasUsuarioScreen({ navigation }) {
+   const [listas, setListas] = useState([]);
 
-  const [produtos, setProdutos] = useState([])
+   React.useEffect(() => {
+    obterListas().then((data) => setListas(data.data)).catch(erro => alert(erro.response.data));
+   }, [])
 
-  React.useEffect(() => {
-    if (itemId) {
-      obterProdutos(itemId).then(data => setProdutos(data.data)).catch(erro => alert(erro.response.data))
-    }
-  }, [itemId])
+  const toggleCheck = (id) => {
+  };
 
   const renderItem = ({ item, index }) => (
-    <View style={[styles.itemCard, { backgroundColor: index === 0 ? '#ddebf2' : '#dadada' }]}>
+    <View style={styles.itemCard}>
       <View style={styles.itemContent}>
         <Text style={styles.itemName}>{item.Nome}</Text>
-        <Text style={styles.itemDetails}>{item.Descricao}</Text>
-        <Text style={styles.itemDetails}>Preço: {item.Preco}</Text>
-        <Text style={styles.itemDetails}>Quantidade: {item.Quantidade}</Text>
+        <MaterialIcons onPress={() => navigation.navigate("Lista", {
+          itemId: item.Id
+        })} size={20} name="visibility" />
       </View>
-      {/* <Checkbox
-        value={item.checked}
-        onValueChange={() => toggleCheck(item.id)}
-        color={item.checked ? '#7A40DB' : undefined}
-      /> */}
     </View>
   );
 
@@ -42,22 +36,16 @@ export default function ShoppingListScreen({ navigation, route }) {
       </View>
 
       {/* Título */}
-      <Text style={styles.listTitle}>Lista de Compra</Text>
+      <Text style={styles.listTitle}>Listas</Text>
       <View style={styles.line} />
 
       {/* Lista */}
       <FlatList
-        data={produtos}
+        data={listas}
         keyExtractor={item => item.Id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
       />
-
-      {/* Add Item */}
-      <TouchableOpacity style={styles.addItemButton}>
-        <Text style={styles.addItemText}>Add new Item</Text>
-        <Ionicons name="add" size={20} />
-      </TouchableOpacity>
     </View>
   );
 }
@@ -95,31 +83,20 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   itemContent: {
-    flexDirection: 'column',
-    gap: 2,
+    flexDirection: 'row',
+    alignItems: "center"
   },
   itemName: {
     fontWeight: 'bold',
     fontSize: 14,
-  },
-  itemDetails: {
-    fontSize: 13,
-  },
-  addItemButton: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 20,
-    gap: 5,
-  },
-  addItemText: {
-    fontSize: 14,
+    color: "black",
+    marginRight: 10
   },
   headerText: {
     fontSize: 18,
     fontWeight: 'bold',
-  }
+  },
 });
