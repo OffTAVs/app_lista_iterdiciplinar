@@ -1,15 +1,27 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native';
+import { logar } from "../axios/axios"
 
 export default function LoginScreen({ navigation }) {
+  const [email, setEmail] = React.useState("");
+  const [senha, setSenha] = React.useState("");
+
+  const onSubmit = () => {
+    logar({
+      email, senha
+    })
+    .then(() => navigation.navigate("Home"))
+    .catch(erro => alert(erro.response.data))
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.topo}></View>
       <Text style={styles.title}>Esmeralda</Text>
       <Image source={require('../assets/logo.png')} style={styles.logo} />
-      <TextInput style={styles.input} placeholder="Email" />
-      <TextInput style={styles.input} placeholder="Senha" secureTextEntry />
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+      <TextInput value={email} onChangeText={setEmail} style={styles.input} placeholder="Email" />
+      <TextInput value={senha} onChangeText={setSenha}  style={styles.input} placeholder="Senha" secureTextEntry />
+      <TouchableOpacity style={styles.button} onPress={onSubmit}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
 
@@ -75,6 +87,5 @@ const styles = StyleSheet.create({
     color: '#333',
     textDecorationLine: 'underline',
     fontSize:20,
-  },
-  
+  }
 });

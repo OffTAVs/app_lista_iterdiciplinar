@@ -6,6 +6,7 @@ import LoginScreen from './screens/LoginScreen';
 import CadastroScreen from './screens/CadastroScreen';
 import HomeScreen from './screens/HomeScreen';
 import ListaScreen from './screens/ListaScreen';
+import ListasUsuarioScreen from './screens/ListasUsuarioScreen';
 import CadastroItemScreen from './screens/CadastroItemScreen';
 
 const Stack = createNativeStackNavigator();
@@ -29,7 +30,7 @@ function DrawerRoutes() {
       }}
     >
       <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="Lista" component={ListaScreen} />
+      <Drawer.Screen name="Listas" component={ListasUsuarioScreen} />
       {/* Outras telas */}
     </Drawer.Navigator>
   );
@@ -43,8 +44,8 @@ export default function App() {
         <Stack.Screen name="Cadastro" component={CadastroScreen} />
         <Stack.Screen name="Home" component={DrawerRoutes} />
         <Stack.Screen name="Lista" component={ListaScreen} />
+        <Stack.Screen name="Listas" component={ListasUsuarioScreen} />
         <Stack.Screen name="CadastroItem" component={CadastroItemScreen} />
-
       </Stack.Navigator>
     </NavigationContainer>
   );
