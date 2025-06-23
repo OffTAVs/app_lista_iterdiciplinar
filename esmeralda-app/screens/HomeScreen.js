@@ -18,17 +18,16 @@ export default function HomeScreen({ navigation }) {
   }
 
   return (
-    <>
-      <View style={styles.container}>
-        {/* Conteúdo principal */}
-        <View style={styles.mainContent}>
-          {/* Cabeçalho */}
-          <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Ionicons name="menu" size={28} color="black" style={{ marginRight: 8 }} />
-            </TouchableOpacity>
-            <Text style={styles.headerText}>Nome do Aplicativo</Text>
-          </View>
+    <View style={styles.container}>
+      {/* Conteúdo principal */}
+      <View style={styles.mainContent}>
+        {/* Cabeçalho */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Ionicons name="menu" size={28} color="black" style={{ marginRight: 90 }} />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>Esmeralda</Text>
+        </View>
 
           {/* Botões centrais */}
           <View style={styles.centerContent}>
@@ -102,21 +101,25 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 1,
-    padding: 16,
+    padding: 0,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#b2e6d4',
-    padding: 10,
-    borderWidth: 2,
-    borderColor: '#00aaff',
-    borderRadius: 4,
+    padding: 15,
+    width: '100%',
+    borderWidth: 0,
     marginBottom: 32,
+    backgroundColor: '#b7e3c3',
+    paddingTop:40,
   },
   headerText: {
-    fontSize: 18,
+    widht:1000,
+    alignItems: 'center',
+    fontSize: 30,
     fontWeight: 'bold',
+
   },
   centerContent: {
     flex: 1,

@@ -29,7 +29,7 @@ export default function CadastroScreen({ navigation }) {
   return (
     
     <View style={styles.container}>
-      <Text style={styles.title}>Nome do Aplicativo</Text>
+      <Text style={styles.title}>Esmeralda</Text>
       <Image source={require('../assets/logo.png')} style={styles.logo} />
       <TextInput value={email} onChangeText={setEmail} style={styles.input} placeholder="Email" />
       <TextInput value={senha} onChangeText={setSenha} style={styles.input} placeholder="Senha" secureTextEntry />

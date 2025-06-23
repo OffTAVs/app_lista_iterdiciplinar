@@ -14,7 +14,12 @@ export default function ShoppingListScreen({ navigation, route }) {
       obterProdutos(itemId).then(data => setProdutos(data.data)).catch(erro => alert(erro.response.data))
     }
   }, [itemId])
-
+ 
+  const toggleCheck = (id) => {
+    setItems(items.map(item =>
+      item.id === id ? { ...item, checked: !item.checked } : item
+    ));
+    
   const renderItem = ({ item, index }) => (
     <View style={[styles.itemCard, { backgroundColor: index === 0 ? '#ddebf2' : '#dadada' }]}>
       <View style={styles.itemContent}>
@@ -35,12 +40,11 @@ export default function ShoppingListScreen({ navigation, route }) {
     <View style={styles.container}>
       {/* Topo */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <Ionicons name="menu" size={28} color="black" style={{ marginRight: 8 }} />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Nome do Aplicativo</Text>
-      </View>
-
+                <TouchableOpacity onPress={() => navigation.openDrawer()}>
+                  <Ionicons name="menu" size={28} color="black" style={{ marginRight: 90 }} />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Esmeralda</Text>
+              </View>
       {/* Título */}
       <Text style={styles.listTitle}>Lista de Compra</Text>
       <View style={styles.line} />
@@ -54,7 +58,7 @@ export default function ShoppingListScreen({ navigation, route }) {
       />
 
       {/* Add Item */}
-      <TouchableOpacity style={styles.addItemButton}>
+      <TouchableOpacity style={styles.addItemButton} onPress={() => navigation.navigate('CadastroItem')}>
         <Text style={styles.addItemText}>Add new Item</Text>
         <Ionicons name="add" size={20} />
       </TouchableOpacity>
@@ -71,8 +75,12 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: 40,
+  },
+  headerTitle: {
+    fontWeight: 'bold',
+    fontSize: 30,    
   },
   listTitle: {
     marginTop: 20,
@@ -103,7 +111,7 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: 18,
   },
   itemDetails: {
     fontSize: 13,
@@ -112,11 +120,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 20,
     paddingVertical: 20,
     gap: 5,
   },
   addItemText: {
-    fontSize: 14,
+    fontSize: 18,
+    paddingButton:30,
   },
   headerText: {
     fontSize: 18,
