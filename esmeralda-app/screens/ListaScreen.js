@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
+
  
 export default function ShoppingListScreen({ navigation }) {
   const [items, setItems] = useState([
@@ -15,28 +16,42 @@ export default function ShoppingListScreen({ navigation }) {
     { id: '2', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
     { id: '3', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
   ]);
+
+import { obterProdutos } from "../axios/axios";
+
+export default function ShoppingListScreen({ navigation, route }) {
+  const { itemId } = route.params;
+
+  const [produtos, setProdutos] = useState([])
+
+  React.useEffect(() => {
+    if (itemId) {
+      obterProdutos(itemId).then(data => setProdutos(data.data)).catch(erro => alert(erro.response.data))
+    }
+  }, [itemId])
+ 
  
   const toggleCheck = (id) => {
     setItems(items.map(item =>
       item.id === id ? { ...item, checked: !item.checked } : item
     ));
-  };
- 
+    
   const renderItem = ({ item, index }) => (
     <View style={[styles.itemCard, { backgroundColor: index === 0 ? '#ddebf2' : '#dadada' }]}>
       <View style={styles.itemContent}>
-        <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemDetails}>{item.price}</Text>
-        <Text style={styles.itemDetails}>Quantidade: {item.quantity}</Text>
+        <Text style={styles.itemName}>{item.Nome}</Text>
+        <Text style={styles.itemDetails}>{item.Descricao}</Text>
+        <Text style={styles.itemDetails}>Preço: {item.Preco}</Text>
+        <Text style={styles.itemDetails}>Quantidade: {item.Quantidade}</Text>
       </View>
-      <Checkbox
+      {/* <Checkbox
         value={item.checked}
         onValueChange={() => toggleCheck(item.id)}
         color={item.checked ? '#7A40DB' : undefined}
-      />
+      /> */}
     </View>
   );
- 
+
   return (
     <View style={styles.container}>
       {/* Topo */}
@@ -46,19 +61,18 @@ export default function ShoppingListScreen({ navigation }) {
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Esmeralda</Text>
               </View>
- 
       {/* Título */}
       <Text style={styles.listTitle}>Lista de Compra</Text>
       <View style={styles.line} />
- 
+
       {/* Lista */}
       <FlatList
-        data={items}
-        keyExtractor={item => item.id}
+        data={produtos}
+        keyExtractor={item => item.Id}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
       />
- 
+
       {/* Add Item */}
       <TouchableOpacity style={styles.addItemButton} onPress={() => navigation.navigate('CadastroItem')}>
         <Text style={styles.addItemText}>Add new Item</Text>
@@ -82,9 +96,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontWeight: 'bold',
-    fontSize: 30,
-    textDecorationLine: 'underline',
-    
+    fontSize: 30,    
   },
   listTitle: {
     marginTop: 20,
@@ -132,4 +144,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingButton:30,
   },
+  headerText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  }
 });

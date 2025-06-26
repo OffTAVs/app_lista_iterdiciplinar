@@ -8,7 +8,7 @@ export default function CadastroItem({ navigation }) {
   const [preco, setPreco] = useState('');
   const [quantidade, setQuantidade] = useState(1);
 
-  const handleSubmit = () => {
+  const handleSubmit = ({navigation}) => {
     // Lógica para cadastrar o item
     alert(`Item cadastrado!\nNome: ${nome}\nDescrição: ${descricao}\nPreço: ${preco}\nQuantidade: ${quantidade}`);
     setNome('');
@@ -20,17 +20,19 @@ export default function CadastroItem({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+
          <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <Ionicons name="menu" size={28} color="black" style={{ marginRight: 90 }} />
           </TouchableOpacity>
+
+        
+
         <TextInput
           style={styles.nomeListaInput}
           value={nomeLista}
           onChangeText={setNomeLista}
         />
-        <TouchableOpacity>
-          <Text style={styles.menuButton}>⋮</Text>
-        </TouchableOpacity>
+        
       </View>
       <View style={styles.form}>
         <Text style={styles.label}>Nome</Text>
@@ -90,52 +92,57 @@ const styles = {
     backgroundColor: '#b7d1b7',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 12,
     marginBottom: 32,
+
   },
   menuButton: {
     fontSize: 22,
     color: '#222',
+    marginTop:40,
   },
   nomeListaInput: {
     backgroundColor: 'transparent',
     borderBottomWidth: 1,
     borderColor: '#7cb77c',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 30,
     textAlign: 'center',
-    width: 140,
     color: '#222',
-    paddingVertical: 2,
+    marginTop:40,
+    marginLeft:90,
   },
   form: {
     flex: 1,
-    alignItems: 'center',
-    gap: 12,
+    margin: 40,
+    gap: 13,
+    
   },
   label: {
     alignSelf: 'flex-start',
-    marginLeft: 40,
+    marginLeft: 0,
     marginBottom: 2,
     color: '#222',
     fontWeight: 'bold',
+    fontSize: 22,
   },
   input: {
-    width: 240,
-    padding: 8,
+    width: 'auto',
+    padding: 13,
     borderRadius: 4,
     borderWidth: 1,
     borderColor: '#ccc',
     backgroundColor: '#fff',
     marginBottom: 8,
+    fontSize:18,
   },
   quantidadeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    
     marginBottom: 16,
+    width:'auto',
   },
   menos: {
     backgroundColor: '#e57373',
@@ -172,7 +179,7 @@ const styles = {
     backgroundColor: '#7cb77c',
     borderRadius: 4,
     paddingVertical: 12,
-    width: 240,
+    width: 'auto',
     alignItems: 'center',
   },
   buttonText: {
