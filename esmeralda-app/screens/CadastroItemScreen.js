@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
 
 export default function CadastroItem({ navigation }) {
   const [nomeLista, setNomeLista] = useState('Nome da Lista');
