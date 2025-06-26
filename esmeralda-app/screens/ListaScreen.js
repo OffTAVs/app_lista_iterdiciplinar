@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Pressable } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import Checkbox from 'expo-checkbox';
 import { deletarProduto, obterLista, obterProdutos } from "../axios/axios";
 
 export default function ShoppingListScreen({ navigation, route }) {
