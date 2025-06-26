@@ -20,9 +20,9 @@ export default function CadastroItem({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity>
-          <Text style={styles.menuButton}>☰</Text>
-        </TouchableOpacity>
+         <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Ionicons name="menu" size={28} color="black" style={{ marginRight: 90 }} />
+          </TouchableOpacity>
         <TextInput
           style={styles.nomeListaInput}
           value={nomeLista}
