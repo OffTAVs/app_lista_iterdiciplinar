@@ -2,17 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Pressable } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import Checkbox from 'expo-checkbox';
-import { obterListas } from "../axios/axios"
+import { deletarLista, obterListas } from "../axios/axios"
 
 export default function ListasUsuarioScreen({ navigation }) {
-   const [listas, setListas] = useState([]);
+  const [listas, setListas] = useState([]);
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     obterListas().then((data) => setListas(data.data)).catch(erro => alert(erro.response.data));
-   }, [])
-
-  const toggleCheck = (id) => {
-  };
+  }, [])
 
   const renderItem = ({ item, index }) => (
     <View style={styles.itemCard}>
@@ -21,6 +18,9 @@ export default function ListasUsuarioScreen({ navigation }) {
         <MaterialIcons onPress={() => navigation.navigate("Lista", {
           itemId: item.Id
         })} size={20} name="visibility" />
+        <MaterialIcons style={{ marginLeft: 15 }} onPress={() => deletarLista(item.Id).then(() => obterListas()
+          .then((data) => setListas(data.data)).catch(erro => alert(erro.response.data)))
+          .catch(erro => alert(erro.response.data))} color="red" size={20} name="delete" />
       </View>
     </View>
   );
@@ -30,9 +30,9 @@ export default function ListasUsuarioScreen({ navigation }) {
       {/* Topo */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <Ionicons name="menu" size={28} color="black" style={{ marginRight: 8 }} />
+          <Ionicons name="menu" size={28} color="black" style={{ marginRight: 90 }} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Nome do Aplicativo</Text>
+        <Text style={styles.headerText}>Esmeralda</Text>
       </View>
 
       {/* Título */}
@@ -55,12 +55,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
   },
   header: {
-    backgroundColor: '#b9e3c6',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: '#b2e6d4',
+    padding: 15,
+    width: '100%',
+    borderWidth: 0,
+    marginBottom: 32,
+    backgroundColor: '#b7e3c3',
+    paddingTop:40,
   },
   listTitle: {
     marginTop: 20,
@@ -96,7 +99,10 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   headerText: {
-    fontSize: 18,
+    widht:1000,
+    alignItems: 'center',
+    fontSize: 30,
     fontWeight: 'bold',
+
   },
 });

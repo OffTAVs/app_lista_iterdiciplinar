@@ -1,43 +1,31 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import Checkbox from 'expo-checkbox';
-
- 
-export default function ShoppingListScreen({ navigation }) {
-  const [items, setItems] = useState([
-    { id: '1', name: 'Banana', price: 'R$4,50', quantity: 5, checked: true },
-    { id: '2', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
-    { id: '3', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
-    { id: '1', name: 'Banana', price: 'R$4,50', quantity: 5, checked: true },
-    { id: '2', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
-    { id: '3', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
-    { id: '1', name: 'Banana', price: 'R$4,50', quantity: 5, checked: true },
-    { id: '2', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
-    { id: '3', name: 'Nome do produto', price: 'preço', quantity: 'quantidade', checked: true },
-  ]);
-
-import { obterProdutos } from "../axios/axios";
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { deletarProduto, obterLista, obterProdutos } from "../axios/axios";
 
 export default function ShoppingListScreen({ navigation, route }) {
   const { itemId } = route.params;
 
   const [produtos, setProdutos] = useState([])
+  const [lista, setLista] = useState();
 
-  React.useEffect(() => {
+  const obterDados = () => {
     if (itemId) {
       obterProdutos(itemId).then(data => setProdutos(data.data)).catch(erro => alert(erro.response.data))
+      obterLista(itemId).then(data => setLista(data.data)).catch(erro => alert(erro.response.data))
     }
+  }
+
+  React.useEffect(() => {
+    obterDados()
   }, [itemId])
- 
- 
-  const toggleCheck = (id) => {
-    setItems(items.map(item =>
-      item.id === id ? { ...item, checked: !item.checked } : item
-    ));
-    
+
+  const deletar = (id) => {
+    deletarProduto(id).then(() => obterDados()).catch(erro => alert(erro.response.data));
+  }
+
   const renderItem = ({ item, index }) => (
-    <View style={[styles.itemCard, { backgroundColor: index === 0 ? '#ddebf2' : '#dadada' }]}>
+    <View style={[styles.itemCard, { backgroundColor: index % 2 === 0 ? '#ddebf2' : '#dadada' }]}>
       <View style={styles.itemContent}>
         <Text style={styles.itemName}>{item.Nome}</Text>
         <Text style={styles.itemDetails}>{item.Descricao}</Text>
@@ -49,6 +37,7 @@ export default function ShoppingListScreen({ navigation, route }) {
         onValueChange={() => toggleCheck(item.id)}
         color={item.checked ? '#7A40DB' : undefined}
       /> */}
+      <MaterialIcons name="delete" color="red" size={30} onPress={() => deletar(item.Id)} />
     </View>
   );
 
@@ -56,13 +45,11 @@ export default function ShoppingListScreen({ navigation, route }) {
     <View style={styles.container}>
       {/* Topo */}
       <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                  <Ionicons name="menu" size={28} color="black" style={{ marginRight: 90 }} />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Esmeralda</Text>
-              </View>
+        <MaterialIcons name="arrow-back" size={30} onPress={() => navigation.navigate("Listas")} />
+        <Text style={styles.headerTitle}>Esmeralda</Text>
+      </View>
       {/* Título */}
-      <Text style={styles.listTitle}>Lista de Compra</Text>
+      {lista && <Text style={styles.listTitle}>{lista.Nome}</Text>}
       <View style={styles.line} />
 
       {/* Lista */}
@@ -74,8 +61,10 @@ export default function ShoppingListScreen({ navigation, route }) {
       />
 
       {/* Add Item */}
-      <TouchableOpacity style={styles.addItemButton} onPress={() => navigation.navigate('CadastroItem')}>
-        <Text style={styles.addItemText}>Add new Item</Text>
+      <TouchableOpacity style={styles.addItemButton} onPress={() => navigation.navigate('CadastroItem', {
+        itemId: itemId
+      })}>
+        <Text style={styles.addItemText}>Adicionar novo item</Text>
         <Ionicons name="add" size={20} />
       </TouchableOpacity>
     </View>
@@ -85,18 +74,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f2f2f2',
-  },
-  header: {
-    backgroundColor: '#b9e3c6',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+  }, header: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#b2e6d4',
+    padding: 15,
+    width: '100%',
+    borderWidth: 0,
+    marginBottom: 32,
+    backgroundColor: '#b7e3c3',
     paddingTop: 40,
   },
   headerTitle: {
     fontWeight: 'bold',
-    fontSize: 30,    
+    fontSize: 30,
   },
   listTitle: {
     marginTop: 20,
@@ -142,10 +133,13 @@ const styles = StyleSheet.create({
   },
   addItemText: {
     fontSize: 18,
-    paddingButton:30,
+    paddingButton: 30,
   },
   headerText: {
-    fontSize: 18,
+    widht: 1000,
+    alignItems: 'center',
+    fontSize: 30,
     fontWeight: 'bold',
-  }
-});
+
+  },
+}); 

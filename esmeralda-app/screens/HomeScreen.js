@@ -18,6 +18,7 @@ export default function HomeScreen({ navigation }) {
   }
 
   return (
+    <>
     <View style={styles.container}>
       {/* Conteúdo principal */}
       <View style={styles.mainContent}>
@@ -34,10 +35,6 @@ export default function HomeScreen({ navigation }) {
             <TouchableOpacity style={styles.actionButton} onPress={() => setModalOpen(true)}>
               <MaterialIcons name="note-add" size={48} color="black" />
               <Text style={styles.buttonText}>Crie uma lista</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton}>
-              <MaterialIcons name="create-new-folder" size={48} color="black" />
-              <Text style={styles.buttonText}>Crie uma pasta</Text>
             </TouchableOpacity>
           </View>
         </View>

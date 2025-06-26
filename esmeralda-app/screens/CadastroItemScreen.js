@@ -1,39 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { adicionarProduto, obterLista } from '../axios/axios';
 
-export default function CadastroItem({ navigation }) {
+export default function CadastroItem({ navigation, route }) {
+  const { itemId } = route.params;
+  const [lista, setLista] = useState();
+
+  useEffect(() => {
+    obterLista(itemId).then(data => setLista(data.data)).catch(erro => alert(erro.response.data))
+  }, [itemId])
+
   const [nomeLista, setNomeLista] = useState('Nome da Lista');
   const [nome, setNome] = useState('');
   const [descricao, setDescricao] = useState('');
   const [preco, setPreco] = useState('');
   const [quantidade, setQuantidade] = useState(1);
 
-  const handleSubmit = ({navigation}) => {
-    // Lógica para cadastrar o item
-    alert(`Item cadastrado!\nNome: ${nome}\nDescrição: ${descricao}\nPreço: ${preco}\nQuantidade: ${quantidade}`);
-    setNome('');
-    setDescricao('');
-    setPreco('');
-    setQuantidade(1);
+  const handleSubmit = () => {
+    adicionarProduto({
+      nome, descricao, quantidade, preco, listaId: itemId
+    }).then(() => {
+      setNome('');
+      setDescricao('');
+      setPreco('');
+      setQuantidade(1);
+      navigation.navigate("Lista", {
+        itemId
+      })
+    }).catch(erro => alert(erro.response.data))
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-
-         <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Ionicons name="menu" size={28} color="black" style={{ marginRight: 90 }} />
-          </TouchableOpacity>
-
-        
-
-        <TextInput
-          style={styles.nomeListaInput}
-          value={nomeLista}
-          onChangeText={setNomeLista}
-        />
-        
+        {lista &&
+          <Text
+            style={styles.nomeListaInput}>{lista.Nome}</Text>
+        }
       </View>
+
       <View style={styles.form}>
         <Text style={styles.label}>Nome</Text>
         <TextInput
@@ -99,24 +104,22 @@ const styles = {
   menuButton: {
     fontSize: 22,
     color: '#222',
-    marginTop:40,
+    marginTop: 40,
   },
   nomeListaInput: {
     backgroundColor: 'transparent',
-    borderBottomWidth: 1,
-    borderColor: '#7cb77c',
     fontWeight: 'bold',
     fontSize: 30,
     textAlign: 'center',
     color: '#222',
-    marginTop:40,
-    marginLeft:90,
+    marginTop: 40,
+    marginLeft: 90,
   },
   form: {
     flex: 1,
     margin: 40,
     gap: 13,
-    
+
   },
   label: {
     alignSelf: 'flex-start',
@@ -134,15 +137,15 @@ const styles = {
     borderColor: '#ccc',
     backgroundColor: '#fff',
     marginBottom: 8,
-    fontSize:18,
+    fontSize: 18,
   },
   quantidadeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    
+
     marginBottom: 16,
-    width:'auto',
+    width: 'auto',
   },
   menos: {
     backgroundColor: '#e57373',
