@@ -20,17 +20,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["android.permission.INTERNET", "android.permission.ACCESS_NETWORK_STATE"],
-      "edgeToEdgeEnabled": true,
-      "package": "com.math2359.esmeraldaapp"
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "9f5106e5-ebbc-4202-8985-7dfed979b158"
-      }
     }
   }
 }
