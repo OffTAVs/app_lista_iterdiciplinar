@@ -8,6 +8,8 @@ import HomeScreen from './screens/HomeScreen';
 import ListaScreen from './screens/ListaScreen';
 import ListasUsuarioScreen from './screens/ListasUsuarioScreen';
 import CadastroItemScreen from './screens/CadastroItemScreen';
+import 'react-native-reanimated';
+import 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
